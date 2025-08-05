@@ -1,0 +1,31 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="align">
+            <h1 class="admin">Admin Panel</h1>
+            <h1 class="add">Add Walpaper</h1>
+            <form method='post' action="{% url 'admin' %}">
+                {% csrf_token %}
+                
+            <input type="file" class="input" name="img" id="img">
+            <input type="name" placeholder="Walpaper Name" name='name'>
+            <select name = "Type" id='Type'>
+                <option value='Nature'>Nature</option>
+                <option value='Mountain'>Mountain</option>
+                <option value='Anime'>Anime</option>
+                <option value='Games'>Games</option>
+            </select>
+            <input type="submit" value="Submit">
+        </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+{% load static %}
+:root{
+    --first : #EB5A3C;
+    --second : #DF9755;
+    --third : #E7D283;
+    --fourth : #EDF4C2;
+}
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: var(--fourth);
+}
+.container{
+    height:100vh;
+    width:100%;
+    background-image: url("{% static '1351270.png' %}");
+    background-size: cover;
+}
+.title{
+    position: absolute;
+    left:35%;
+}
+.header{
+    height:5vh;
+    text-align: center;
+    position:fixed;
+    top:0;
+}
+ul li{
+    display: inline;
+    font-size: 25px;
+    padding-right:20px;
+    font-weight: 800;
+    color:white;
+    cursor: pointer;
+}
+
+.set{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 20px;
+}
+.box img{
+    height:250px;
+    width:100%;
+}
+.box{
+    padding:30px;
+    height:400px;
+    width:100%;
+    background-color: var(--first);
+    text-align: center;
+}
+.box:nth-child(even){
+    background-color: var(--second);
+}
+.box ._title{
+    font-size: 30px;
+}
+.a{
+    display: flex;
+    justify-content: center;
+    color:white;
+}
+.a input{
+    height:50px;
+    width:100px;
+    font-size: 15px;
+    font-weight: 900;
+    background-color: var(--fourth);
+}
+.a h2 , .a .input{
+    padding:20px;
+}

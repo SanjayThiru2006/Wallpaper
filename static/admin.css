@@ -1,0 +1,23 @@
+.container{
+    height:300px;
+    width:300px;
+    background-color:floralwhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+}
+.align{
+    text-align: center;
+    color:blueviolet;
+}
+input{
+    height:30px;
+    outline:none;
+    background-color: transparent;
+}
