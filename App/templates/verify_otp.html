@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP - Django Auth</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background: #fff0f4;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(196, 69, 105, 0.3);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(24px, 5vw, 32px);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: clamp(12px, 3vw, 14px);
+        }
+
+        .form-container {
+            padding: 30px 20px;
+        }
+
+        .info-text {
+            text-align: center;
+            color: #c44569;
+            font-size: clamp(13px, 3vw, 14px);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .info-text strong {
+            color: #ff6b9d;
+            font-size: clamp(15px, 3.5vw, 16px);
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 45px 14px 15px;
+            border: 2px solid #ffe0e9;
+            border-radius: 10px;
+            font-size: clamp(14px, 3.5vw, 15px);
+            transition: all 0.3s;
+            background: #fff5f7;
+            outline: none;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #ff6b9d;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: clamp(15px, 3.5vw, 16px);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Verify OTP</h1>
+            <p>Enter the code sent to your phone</p>
+        </div>
+
+        <div class="form-container">
+
+            <p class="info-text">
+                📱 Enter the 6-digit OTP sent to<br>
+                <strong id="otp-phone-display">{{phone}}</strong>
+            </p>
+
+            <!-- ✅ FORM START -->
+            <form method="POST" action="/verify_otp/">
+                {% csrf_token %}
+
+                <div class="input-wrapper">
+                    <input type="hidden" name="phone" value="{{ phone }}">
+                    <input 
+                        type="text" 
+                        name="otp"
+                        id="otp-input" 
+                        maxlength="6" 
+                        inputmode="numeric" 
+                        pattern="[0-9]*" 
+                        placeholder="Enter OTP">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="otp-btn">
+                    Verify OTP & Login
+                </button>
+
+            </form>
+            <!-- ✅ FORM END -->
+
+        </div>
+    </div>
+</body>
+</html>

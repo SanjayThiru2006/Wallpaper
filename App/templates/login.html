@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Django Auth</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(196, 69, 105, 0.3);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(24px, 5vw, 32px);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: clamp(12px, 3vw, 14px);
+        }
+
+        .form-container {
+            padding: 30px 20px;
+        }
+
+        .info-text {
+            text-align: center;
+            color: #c44569;
+            font-size: clamp(13px, 3vw, 14px);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #c44569;
+            font-weight: 600;
+            font-size: clamp(13px, 3vw, 14px);
+        }
+
+        .required {
+            color: #ff1744;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 45px 14px 15px;
+            border: 2px solid #ffe0e9;
+            border-radius: 10px;
+            font-size: clamp(14px, 3.5vw, 15px);
+            transition: all 0.3s;
+            background: #fff5f7;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff6b9d;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff6b9d;
+            font-size: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: clamp(15px, 3.5vw, 16px);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Message styling */
+.message {
+    width: 100%;
+    text-align: center;
+    padding: 14px 18px;
+    margin: 15px auto;
+    border-radius: 8px;
+    font-size: 15px;
+    
+    background: #ffebee;      /* light red background */
+    color: #c62828;           /* dark red text */
+    border: 2px solid #ef9a9a; /* soft red border */
+
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* small animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+        .message.show {
+            display: block;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.success {
+            background: #d4f4dd;
+            color: #1e8449;
+            border: 2px solid #82e0aa;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #ef9a9a;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 25px;
+            color: #c44569;
+            font-size: clamp(13px, 3vw, 14px);
+        }
+
+        .link a {
+            color: #ff6b9d;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            body { padding: 30px; }
+            .container { max-width: 500px; }
+            .header { padding: 40px 30px; }
+            .form-container { padding: 40px 35px; }
+        }
+
+        @media (min-width: 1024px) {
+            body { padding: 40px; }
+            .container { max-width: 520px; }
+            .header { padding: 45px 35px; }
+            .form-container { padding: 45px 40px; }
+            .btn:hover { transform: translateY(-2px); }
+        }
+
+        @media (max-width: 360px) {
+            body { padding: 10px; }
+            .container { border-radius: 15px; }
+            .header { padding: 25px 15px; }
+            .form-container { padding: 25px 15px; }
+            input { padding: 12px 40px 12px 12px; }
+            .btn { padding: 14px; }
+        }
+
+        @media (max-height: 600px) and (orientation: landscape) {
+            .header { padding: 20px; }
+            .header h1 { font-size: 24px; }
+            .form-container { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💖 Welcome Back</h1>
+            <p>Login to your account</p>
+        </div>
+
+        <div class="form-container">
+
+            <p class="info-text">📱 Enter your phone number to receive OTP</p>
+
+            <!-- Display Django messages -->
+            {% if messages %}
+                {% for message in messages %}
+                        <div class="message show">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Form -->
+            <form method="POST" action="/send_otp/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <input type="tel" id="login-phone" name="phone" required placeholder="10 digit phone number" pattern="[0-9]{10}" inputmode="numeric">
+                        <span class="input-icon">📱</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="login-btn">
+                    Send OTP
+                </button>
+
+                <div class="link">
+                    Don't have an account? <a href="/register/">Register here</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>
