@@ -8,5 +8,5 @@ urlpatterns = [
     path('verify_otp/',views.verify_otp,name='verify_otp'),
     path('products/',views.products,name='products'),
     path('logout/', views.logout_view, name='logout'),
-    path("live-products/", views.live_products, name="live_products"),
+    path('cart/', views.cart,name='cart'),
 ]

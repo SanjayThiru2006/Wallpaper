@@ -49,14 +49,5 @@ def logout_view(request):
     request.session.flush()
     return redirect('/')
 
-from django.http import JsonResponse
-
-def live_products(request):
-    products = Product.objects.all().order_by('name')
-
-    html = render_to_string('products.html', {
-        'product': products,
-        'ajax_request': True  # flag to identify AJAX load
-    })
-
-    return HttpResponse(html)
+def cart(request):
+    return render(request , 'cart.html')

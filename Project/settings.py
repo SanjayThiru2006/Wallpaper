@@ -29,11 +29,16 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+# Cloudinary
+
 
 INSTALLED_APPS = [
     'channels',
     
     'jazzmin',
+    
+    'cloudinary',
+    'cloudinary_storage',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,6 +48,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'App',
 ]
+CLOUDINARY_URL = "cloudinary://751287266349579:5icgZVk-HM5SzozK6vTSxh5vuPY@drrbqgt5x"
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name="drrbqgt5x",
+    api_key="751287266349579",
+    api_secret="5icgZVk-HM5SzozK6vTSxh5vuPY",
+    secure=True
+)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 ASGI_APPLICATION = 'Project.asgi.application'
 
@@ -135,5 +151,3 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'

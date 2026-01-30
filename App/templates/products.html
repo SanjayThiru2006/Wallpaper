@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pink Luxury Supermarket</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     body { 
       margin: 0; 
@@ -26,6 +27,7 @@
       display: flex; 
       justify-content: flex-end; 
       padding: 10px 20px; 
+      gap: 10px;
     }
 
     .top-right a { 
@@ -33,7 +35,7 @@
       font-weight: 600; 
       text-decoration: none; 
       border: 2px solid #ff66b2; 
-      padding: 5px 12px; 
+      padding: 5px 14px; 
       border-radius: 20px; 
       background: white;
     }
@@ -43,7 +45,7 @@
       color: white; 
     }
 
-    /* CATEGORY BAR WITH SCROLL BUTTONS */
+    /* CATEGORY BAR */
     .category-container {
       display: flex; 
       align-items: center;
@@ -86,7 +88,10 @@
       flex-shrink: 0; 
     }
 
-    .category-bar a:hover { background: #ff66b2; color: white; }
+    .category-bar a:hover { 
+      background: #ff66b2; 
+      color: white; 
+    }
 
     .products { 
       display: grid; 
@@ -126,7 +131,6 @@
       padding: 6px 12px; 
       border-radius: 8px; 
       text-decoration: none; 
-      margin: 0 5px; 
       cursor: pointer;
       border: none;
       font-weight: 500;
@@ -158,110 +162,58 @@
     }
   </style>
 </head>
+
 <body>
 
-  <header>🌸 Pink Luxury Supermarket 🌸</header>
+<header>🌸 Pink Luxury Supermarket 🌸</header>
 
-  <div class="top-right">
-      <a href="{% url 'logout' %}">🚪 Logout</a>
-  </div>
+<!-- TOP RIGHT BUTTONS -->
+<div class="top-right">
+    <a href="{% url 'cart' %}">🛒 Cart</a>
+    <a href="{% url 'logout' %}">🚪 Logout</a>
+</div>
 
-  <!-- Category bar with scroll buttons -->
-  <div class="category-container">
-      <button class="scroll-btn" id="scroll-left">◀</button>
-      <div class="category-bar" id="category-bar">
-        {% for c in category %}
-          <a href="">{{ c.name }}</a>
-        {% endfor %}
-      </div>
-      <button class="scroll-btn" id="scroll-right">▶</button>
-  </div>
-
-  <div class="products" id="product">
-    {% for p in product %}
-      <div class="product" data-product-id="{{ p.id }}" data-max="{{ p.quantity }}">
-        <img src="{{ p.image.url }}" alt="{{ p.name }}">
-        <h4>{{ p.name }}</h4>
-        <p>${{ p.price }}</p>
-        
-        <!-- Add to Cart / Quantity Selector -->
-        <div class="cart-action">
-          {% if p.quantity > 0 %}
-            <button class="add-cart-btn">Add to Cart</button>
-          {% else %}
-            <button class="add-cart-btn out-of-stock" disabled>Out of Stock</button>
-          {% endif %}
-          <div class="quantity-selector" style="display:none;">
-            <button class="decrease">-</button>
-            <input type="text" value="1" readonly>
-            <button class="increase">+</button>
-          </div>
-        </div>
-      </div>
-    {% empty %}
-      <p style="text-align:center;">No products available in this category.</p>
+<!-- CATEGORY BAR -->
+<div class="category-container">
+  <button class="scroll-btn" id="scroll-left">◀</button>
+  <div class="category-bar" id="category-bar">
+    {% for c in category %}
+      <a href="">{{ c.name }}</a>
     {% endfor %}
   </div>
+  <button class="scroll-btn" id="scroll-right">▶</button>
+</div>
 
-  <script>
-    // Scroll category bar
-    const bar = document.getElementById('category-bar');
-    document.getElementById('scroll-left').addEventListener('click', () => {
-      bar.scrollBy({ left: -150, behavior: 'smooth' });
-    });
-    document.getElementById('scroll-right').addEventListener('click', () => {
-      bar.scrollBy({ left: 150, behavior: 'smooth' });
-    });
+<!-- PRODUCTS -->
+<div class="products" id="product">
+  {% for p in product %}
+  <div class="product" data-product-id="{{ p.id }}" data-max="{{ p.quantity }}">
+    <img src="{{ p.image.url }}" alt="{{ p.name }}">
+    <h4>{{ p.name }}</h4>
+    <p>${{ p.price }}</p>
 
-    // Add to Cart quantity logic
-    document.querySelectorAll('.product').forEach(product => {
-      const addBtn = product.querySelector('.add-cart-btn');
-      const qtyDiv = product.querySelector('.quantity-selector');
-      const input = qtyDiv.querySelector('input');
-      const plusBtn = qtyDiv.querySelector('.increase');
-      const minusBtn = qtyDiv.querySelector('.decrease');
+    <div class="cart-action">
+      {% if p.quantity > 0 %}
+        <button class="add-cart-btn">Add to Cart</button>
+      {% else %}
+        <button class="add-cart-btn out-of-stock" disabled>Out of Stock</button>
+      {% endif %}
 
-      // Skip out-of-stock products
-      if (!addBtn || addBtn.disabled) return;
+      <div class="quantity-selector" style="display:none;">
+        <button class="decrease">-</button>
+        <input type="text" value="1" readonly>
+        <button class="increase">+</button>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+    <p style="text-align:center;">No products available.</p>
+  {% endfor %}
+</div>
 
-      const MAX_QTY = parseInt(product.dataset.max) || 1;
 
-      // Show quantity selector on click
-      addBtn.addEventListener('click', () => {
-        addBtn.style.display = 'none';
-        qtyDiv.style.display = 'flex';
-      });
 
-      // Increase quantity
-      plusBtn.addEventListener('click', () => {
-        let val = parseInt(input.value);
-        if (val < MAX_QTY) input.value = val + 1;
-      });
 
-  minusBtn.addEventListener('click', () => {
-    let val = parseInt(input.value);
-    if (val > 1) {
-      input.value = val - 1;
-    } else {
-      // If quantity is 1, hide quantity selector and show Add to Cart
-      qtyDiv.style.display = 'none';
-      addBtn.style.display = 'inline-block';
-    }
-});
-
-    });
-  </script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-function updateProducts() {
-    $("#product").load("{% url 'live_products' %}");
-}
-
-setInterval(updateProducts, 1000);
-updateProducts();
-</script>
 
 </body>
 </html>

@@ -45,7 +45,8 @@ class Product(models.Model):
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.IntegerField(default=0)
     reorder_threshold = models.IntegerField(default=10)
-    image = models.ImageField(upload_to='products/', max_length=255, null=True, blank=True)
+    from cloudinary.models import CloudinaryField
+    image = CloudinaryField('image')
     expiry_date = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
